@@ -1,0 +1,1 @@
+export { FooterEcommerce } from "./footer";

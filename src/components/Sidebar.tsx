@@ -122,24 +122,12 @@ export default function Sidebar() {
                 Início
               </p>
             </Link>
-            <Link href={routes.chamada.home}>
-              <p className="flex gap-2 items-center text-sm hover:cursor-pointer hover:bg-muted p-1 rounded-sm">
-                <Table size={18} />
-                Chamada
-              </p>
-            </Link>
-            <Link href={routes.chamada.search}>
-              <p className="flex gap-2 items-center text-sm hover:cursor-pointer hover:bg-muted p-1 rounded-sm">
-                <Table size={18} />
-                Listar chamadas
-              </p>
-            </Link>
           </section>
 
           <h1 className="text-sm text-muted-foreground">Cadastros</h1>
           <Accordion type="single" collapsible>
             <AccordionItem value="item-1">
-              <AccordionTrigger className="text-sm">Aluno</AccordionTrigger>
+              <AccordionTrigger className="text-sm">Cliente</AccordionTrigger>
               <AccordionContent>
                 <Command style={{ overflow: "visible" }}>
                   <CommandList style={{ overflow: "visible" }}>
@@ -163,7 +151,7 @@ export default function Sidebar() {
 
           <Accordion type="single" collapsible>
             <AccordionItem value="item-1">
-              <AccordionTrigger className="text-sm">Curso</AccordionTrigger>
+              <AccordionTrigger className="text-sm">Produto</AccordionTrigger>
               <AccordionContent>
                 <Command style={{ overflow: "visible" }}>
                   <CommandList style={{ overflow: "visible" }}>
@@ -188,7 +176,7 @@ export default function Sidebar() {
           <Accordion type="single" collapsible>
             <AccordionItem value="item-1">
               <AccordionTrigger className="text-sm">
-                Disciplina
+                Serviço
               </AccordionTrigger>
               <AccordionContent>
                 <Command style={{ overflow: "visible" }}>
@@ -210,90 +198,38 @@ export default function Sidebar() {
               </AccordionContent>
             </AccordionItem>
           </Accordion>
-
-          <Accordion type="single" collapsible>
-            <AccordionItem value="item-1">
-              <AccordionTrigger className="text-sm">
-                Faltas disciplinares
-              </AccordionTrigger>
-              <AccordionContent>
-                <Command style={{ overflow: "visible" }}>
-                  <CommandList style={{ overflow: "visible" }}>
-                    {menuFaltasDisciplinares.map((menu: any, key: number) => (
-                      <CommandGroup key={key} heading={menu.group}>
-                        {menu.items.map((option: any, optionKey: number) => (
-                          <CommandItem
-                            key={optionKey}
-                            className="flex justify-between cursor-pointer"
-                          >
-                            <Link href={option.link}>{option.text}</Link>
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    ))}
-                  </CommandList>
-                </Command>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-
-          <Accordion type="single" collapsible>
-            <AccordionItem value="item-1">
-              <AccordionTrigger className="text-sm">Professor</AccordionTrigger>
-              <AccordionContent>
-                <Command style={{ overflow: "visible" }}>
-                  <CommandList style={{ overflow: "visible" }}>
-                    {menuTeacher.map((menu: any, key: number) => (
-                      <CommandGroup key={key} heading={menu.group}>
-                        {menu.items.map((option: any, optionKey: number) => (
-                          <CommandItem
-                            key={optionKey}
-                            className="flex justify-between cursor-pointer"
-                          >
-                            <Link href={option.link}>{option.text}</Link>
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    ))}
-                  </CommandList>
-                </Command>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-
-          <Accordion type="single" collapsible>
-            <AccordionItem value="item-1">
-              <AccordionTrigger className="text-sm">Turma</AccordionTrigger>
-              <AccordionContent>
-                <Command style={{ overflow: "visible" }}>
-                  <CommandList style={{ overflow: "visible" }}>
-                    {menuClass.map((menu: any, key: number) => (
-                      <CommandGroup key={key} heading={menu.group}>
-                        {menu.items.map((option: any, optionKey: number) => (
-                          <CommandItem
-                            key={optionKey}
-                            className="flex justify-between cursor-pointer"
-                          >
-                            <Link href={option.link}>{option.text}</Link>
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    ))}
-                  </CommandList>
-                </Command>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
         </div>
         <h1 className="text-sm text-muted-foreground mb-3 mt-5">Relatórios</h1>
-        <Link href={routes.faltas.faltas}>
-          <p className="flex gap-2 items-center text-sm hover:cursor-pointer hover:bg-muted p-1 rounded-sm">
-            Faltas
-          </p>
-        </Link>
+        <div className="flex flex-col gap-2 ml-2">
+          <Link href={routes.faltas.faltas}>
+            <p className="flex gap-2 items-center text-sm hover:cursor-pointer hover:bg-muted p-1 rounded-sm">
+              Vendas
+            </p>
+          </Link>
+          <Link href={routes.faltas.faltas}>
+            <p className="flex gap-2 items-center text-sm hover:cursor-pointer hover:bg-muted p-1 rounded-sm">
+              Clientes
+            </p>
+          </Link>
+          <Link href={routes.faltas.faltas}>
+            <p className="flex gap-2 items-center text-sm hover:cursor-pointer hover:bg-muted p-1 rounded-sm">
+              Animais
+            </p>
+          </Link>
+          <Link href={routes.faltas.faltas}>
+            <p className="flex gap-2 items-center text-sm hover:cursor-pointer hover:bg-muted p-1 rounded-sm">
+              Produtos
+            </p>
+          </Link>
+          <Link href={routes.faltas.faltas}>
+            <p className="flex gap-2 items-center text-sm hover:cursor-pointer hover:bg-muted p-1 rounded-sm">
+              Serviçõs
+            </p>
+          </Link>
+        </div>
       </ScrollArea>
 
-      <div className="flex gap-2 items-center">
+      <footer className="fixed bottom-4 left-2 flex gap-2 items-center justify-between p-2 bg-background">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline">
@@ -315,7 +251,7 @@ export default function Sidebar() {
         </DropdownMenu>
 
         <ModeToggle />
-      </div>
+      </footer>
     </div>
   );
 }

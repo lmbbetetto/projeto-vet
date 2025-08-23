@@ -44,6 +44,10 @@ export const routes = {
   },
   faltas: {
     faltas: "/gestor/faltas"
+  },
+  cliente: {
+    new: "/dashboard/cliente/create",
+    search: "/dashboard/cliente"
   }
 };
 

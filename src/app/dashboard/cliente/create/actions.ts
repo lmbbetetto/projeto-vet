@@ -55,36 +55,3 @@ export async function createNewCliente(
 
   return result;
 }
-
-// export async function editCliente(
-//   id: number,
-//   payload: ClienteRequest
-// ): Promise<Cliente> {
-//   const data: ClienteRequest = {
-//     nome: payload.nome,
-//     cpf: payload.cpf,
-//     telefone: payload.telefone,
-//     email: payload.email,
-//     enderecoRequest: {
-//       logradouro: payload.enderecoRequest.logradouro,
-//       numero: payload.enderecoRequest.numero,
-//       bairro: payload.enderecoRequest.bairro,
-//       cep: payload.enderecoRequest.cep,
-//       cidade: payload.enderecoRequest.cidade,
-//       estado: payload.enderecoRequest.estado,
-//       complemento: payload.enderecoRequest.complemento ?? ""
-//     },
-//     authRequest: {
-//       login: payload.authRequest.login,
-//       password: payload.authRequest.password
-//     }
-//   };
-
-//   console.log(JSON.stringify(data));
-
-//   const response = await updateCliente(String(id), data);
-
-//   console.log(response);
-//   revalidatePath(routes.cliente.search, 'page');
-//   return response;
-// }

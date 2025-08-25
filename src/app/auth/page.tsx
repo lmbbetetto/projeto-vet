@@ -2,6 +2,7 @@
 
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
 import { Label } from "@radix-ui/react-label"
 import { Input } from "@/components/ui/input"
@@ -9,45 +10,48 @@ import { toast } from "sonner"
 import { useRouter } from 'next/navigation'
 import { routes } from '@/utils/routes'
 
-const singInForm = z.object({
-  email: z.string().email("Email inválido"),
+const signInForm = z.object({
+  login: z.string().min(1, "Usuário é obrigatório"),
   password: z.string().min(1, "Senha é obrigatória"),
 })
 
-type SingInForm = z.infer<typeof singInForm>
+type SignInForm = z.infer<typeof signInForm>
 
-export default function SingIn() {
-  const router = useRouter();
-  const { register, handleSubmit, setError, formState: { isSubmitting, errors } } = useForm<SingInForm>()
+export default function SignIn() {
+  const router = useRouter()
+  const { register, handleSubmit, setError, formState: { isSubmitting, errors } } = useForm<SignInForm>({
+    resolver: zodResolver(signInForm),
+  })
 
-  async function handleSingIn(data: SingInForm) {
+  async function handleSignIn(data: SignInForm) {
     try {
-      await new Promise((resolve, reject) => {
-        const isValid = data.email === "leonardo@email.com" && data.password === "senha123";
-        setTimeout(() => {
-          if (isValid) {
-            resolve(null);
-          } else {
-            reject(new Error("Credenciais inválidas"));
-          }
-        }, 2000);
-      });
+      const response = await fetch('http://localhost:8080/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          login: data.login,
+          password: data.password,
+        }),
+      })
 
-      toast.success('Enviamos um link de autenticação para seu e-mail.', {
-        action: {
-          label: 'Reenviar',
-          onClick: () => handleSingIn(data),
-        }
-      });
+      if (!response.ok) {
+        const errorText = await response.text()
+        console.error("Erro ao autenticar:", response.status, errorText)
+        throw new Error("Credenciais inválidas")
+      }
 
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      router.push(routes.home.home);
+      const result = await response.json()
+
+      document.cookie = `token=${result.token}; path=/; max-age=3600; sameSite=Lax`
+
+      toast.success('Login realizado com sucesso!')
+      router.push(routes.home.home)
 
     } catch (error) {
-      console.error(error);
-      setError("email", { type: "manual", message: "Credenciais inválidas." });
-      setError("password", { type: "manual", message: "Credenciais inválidas." });
-      toast.error('Credenciais inválidas.');
+      console.error(error)
+      setError("login", { type: "manual", message: "Credenciais inválidas." })
+      setError("password", { type: "manual", message: "Credenciais inválidas." })
+      toast.error('Credenciais inválidas.')
     }
   }
 
@@ -61,14 +65,14 @@ export default function SingIn() {
           <h1 className="text-2xl font-semibold tracking-tight">
             Acessar sistema
           </h1>
-          <p className="text-sm text-muted-foreground">Acesse o sistema em modo gestor</p>
+          <p className="text-sm text-muted-foreground">Acesse o dashboard</p>
         </div>
 
-        <form onSubmit={handleSubmit(handleSingIn)} className="space-y-4">
+        <form onSubmit={handleSubmit(handleSignIn)} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="email">E-mail</Label>
-            <Input id="email" type="email" {...register('email')} />
-            {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+            <Label htmlFor="text">Login</Label>
+            <Input id="login" type="text" {...register('login')} />
+            {errors.login && <p className="text-red-500 text-sm">{errors.login.message}</p>}
           </div>
 
           <div className="space-y-2">

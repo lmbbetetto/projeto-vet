@@ -1,10 +1,9 @@
 "use client";
-import { LogOut, Table, User, House } from "lucide-react";
+import { LogOut, User, House } from "lucide-react";
 import UserItem from "./UserItem";
 import { Command, CommandGroup, CommandItem, CommandList } from "./ui/command";
 import { Button } from "./ui/button";
 import { ModeToggle } from "./toggle-theme";
-
 import {
   Accordion,
   AccordionContent,
@@ -19,91 +18,45 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { routes } from "@/utils/routes";
+import { useCallback } from "react";
 
 export default function Sidebar() {
-  const menuTeacher = [
+  const router = useRouter();
+
+  const handleLogout = useCallback(() => {
+    document.cookie = "token=; path=/; max-age=0; sameSite=Lax";
+    router.push(routes.auth.home);
+  }, [router]);
+
+  const cadastroMenus = [
     {
+      title: "Cliente",
       items: [
-        {
-          link: routes.professor.new,
-          text: "Cadastrar professor",
-        },
-        {
-          link: routes.professor.search,
-          text: "Buscar professor",
-        },
+        { link: routes.cliente.new, text: "Cadastrar cliente" },
+        { link: routes.cliente.search, text: "Buscar cliente" },
       ],
     },
-  ];
-  const menuStudant = [
     {
+      title: "Produto",
       items: [
-        {
-          link: routes.aluno.new,
-          text: "Cadastrar aluno",
-        },
-        {
-          link: routes.aluno.search,
-          text: "Buscar aluno",
-        },
+        { link: routes.product.new, text: "Cadastrar produto" },
+        { link: routes.product.search, text: "Buscar produto" },
       ],
     },
-  ];
-  const menuClass = [
     {
+      title: "Tipo de Produto",
       items: [
-        {
-          link: routes.turma.new,
-          text: "Cadastrar turma",
-        },
-        {
-          link: routes.turma.search,
-          text: "Buscar turma",
-        },
+        { link: routes.kindProduct.new, text: "Cadastrar tipo de produto" },
+        { link: routes.kindProduct.search, text: "Buscar tipo de produto" },
       ],
     },
-  ];
-  const menuCurse = [
     {
+      title: "Serviço",
       items: [
-        {
-          link: routes.curso.new,
-          text: "Cadastrar curso",
-        },
-        {
-          link: routes.curso.search,
-          text: "Buscar curso",
-        },
-      ],
-    },
-  ];
-  const menuDisciplina = [
-    {
-      items: [
-        {
-          link: routes.disciplina.new,
-          text: "Cadastrar disciplina",
-        },
-        {
-          link: routes.disciplina.search,
-          text: "Buscar disciplina",
-        },
-      ],
-    },
-  ];
-  const menuFaltasDisciplinares = [
-    {
-      items: [
-        {
-          link: routes.faltasDisciplinares.new,
-          text: "Cadastrar faltas disciplinares",
-        },
-        {
-          link: routes.faltasDisciplinares.search,
-          text: "Buscar faltas disciplinares",
-        },
+        { link: routes.service.new, text: "Cadastrar serviço" },
+        { link: routes.service.search, text: "Buscar serviço" },
       ],
     },
   ];
@@ -115,117 +68,40 @@ export default function Sidebar() {
       </div>
       <ScrollArea className="h-[35rem] w-[282px] pr-4">
         <div className="grow">
-          <section className="flex flex-col gap-2  mt-2 mb-6">
-            <Link href={routes.home.home}>
-              <p className="flex gap-2 items-center text-sm hover:cursor-pointer hover:bg-muted p-1 rounded-sm">
-                <House size={18} />
-                Início
-              </p>
-            </Link>
+          <section className="flex flex-col gap-2 mt-2 mb-6">
+            <p
+              className="flex gap-2 items-center text-sm hover:cursor-pointer hover:bg-muted p-1 rounded-sm"
+              onClick={() => router.push(routes.home.home)}
+            >
+              <House size={18} />
+              Início
+            </p>
           </section>
 
           <h1 className="text-sm text-muted-foreground">Cadastros</h1>
-          <Accordion type="single" collapsible>
-            <AccordionItem value="item-1">
-              <AccordionTrigger className="text-sm">Cliente</AccordionTrigger>
-              <AccordionContent>
-                <Command style={{ overflow: "visible" }}>
-                  <CommandList style={{ overflow: "visible" }}>
-                    {menuStudant.map((menu: any, key: number) => (
-                      <CommandGroup key={key} heading={menu.group}>
-                        {menu.items.map((option: any, optionKey: number) => (
-                          <CommandItem
-                            key={optionKey}
-                            className="flex justify-between cursor-pointer"
-                          >
-                            <Link href={option.link}>{option.text}</Link>
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    ))}
-                  </CommandList>
-                </Command>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+          {cadastroMenus.map((menu, idx) => (
+            <Accordion key={idx} type="single" collapsible>
+              <AccordionItem value={`item-${idx}`}>
+                <AccordionTrigger className="text-sm">{menu.title}</AccordionTrigger>
+                <AccordionContent>
+                  <Command style={{ overflow: "visible" }}>
+                    <CommandList style={{ overflow: "visible" }}>
+                      {menu.items.map((option, oIdx) => (
+                        <CommandItem
+                          key={oIdx}
+                          className="flex justify-between cursor-pointer bg-transparent hover:bg-muted"
+                          onSelect={() => router.push(option.link)}
+                        >
+                          {option.text}
+                        </CommandItem>
+                      ))}
+                    </CommandList>
+                  </Command>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          ))}
 
-          <Accordion type="single" collapsible>
-            <AccordionItem value="item-1">
-              <AccordionTrigger className="text-sm">Produto</AccordionTrigger>
-              <AccordionContent>
-                <Command style={{ overflow: "visible" }}>
-                  <CommandList style={{ overflow: "visible" }}>
-                    {menuCurse.map((menu: any, key: number) => (
-                      <CommandGroup key={key} heading={menu.group}>
-                        {menu.items.map((option: any, optionKey: number) => (
-                          <CommandItem
-                            key={optionKey}
-                            className="flex justify-between cursor-pointer"
-                          >
-                            <Link href={option.link}>{option.text}</Link>
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    ))}
-                  </CommandList>
-                </Command>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-
-          <Accordion type="single" collapsible>
-            <AccordionItem value="item-1">
-              <AccordionTrigger className="text-sm">
-                Serviço
-              </AccordionTrigger>
-              <AccordionContent>
-                <Command style={{ overflow: "visible" }}>
-                  <CommandList style={{ overflow: "visible" }}>
-                    {menuDisciplina.map((menu: any, key: number) => (
-                      <CommandGroup key={key} heading={menu.group}>
-                        {menu.items.map((option: any, optionKey: number) => (
-                          <CommandItem
-                            key={optionKey}
-                            className="flex justify-between cursor-pointer"
-                          >
-                            <Link href={option.link}>{option.text}</Link>
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    ))}
-                  </CommandList>
-                </Command>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        </div>
-        <h1 className="text-sm text-muted-foreground mb-3 mt-5">Relatórios</h1>
-        <div className="flex flex-col gap-2 ml-2">
-          <Link href={routes.faltas.faltas}>
-            <p className="flex gap-2 items-center text-sm hover:cursor-pointer hover:bg-muted p-1 rounded-sm">
-              Vendas
-            </p>
-          </Link>
-          <Link href={routes.faltas.faltas}>
-            <p className="flex gap-2 items-center text-sm hover:cursor-pointer hover:bg-muted p-1 rounded-sm">
-              Clientes
-            </p>
-          </Link>
-          <Link href={routes.faltas.faltas}>
-            <p className="flex gap-2 items-center text-sm hover:cursor-pointer hover:bg-muted p-1 rounded-sm">
-              Animais
-            </p>
-          </Link>
-          <Link href={routes.faltas.faltas}>
-            <p className="flex gap-2 items-center text-sm hover:cursor-pointer hover:bg-muted p-1 rounded-sm">
-              Produtos
-            </p>
-          </Link>
-          <Link href={routes.faltas.faltas}>
-            <p className="flex gap-2 items-center text-sm hover:cursor-pointer hover:bg-muted p-1 rounded-sm">
-              Serviçõs
-            </p>
-          </Link>
         </div>
       </ScrollArea>
 
@@ -236,20 +112,15 @@ export default function Sidebar() {
               <User className="w-4 h-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start">
-            <DropdownMenuItem className="flex gap-2 text-rose-500 dark:text-rose-400">
-              <span>
-                <Link href={routes.auth.home}>Sair</Link>
-              </span>
-              <LogOut className="w-4 h-4" />
+          <DropdownMenuContent align="start" className="z-50">
+            <DropdownMenuItem asChild className="flex gap-2 text-rose-500 dark:text-rose-400" onSelect={handleLogout}>
+              <a href={routes.auth.home} className="flex items-center gap-2">
+                Sair
+                <LogOut className="w-4 h-4" />
+              </a>
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <Link href={routes.userPage.user("H542R5")}>
-              <DropdownMenuItem>Perfil</DropdownMenuItem>
-            </Link>
           </DropdownMenuContent>
         </DropdownMenu>
-
         <ModeToggle />
       </footer>
     </div>

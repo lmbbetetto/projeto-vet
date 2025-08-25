@@ -7,18 +7,11 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { StudentsRows } from "./costumer-row"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { routes } from "@/utils/routes"
-
+import { CostumerRows } from "./costumer-row"
 
 export default function SearchTeacher() {
     return (
-        <main className="mt-6">
-            <div className="flex gap-4">
-                <Button className="mb-10"><Link href={routes.cliente.new}>Novo cliente</Link></Button>
-            </div>
+        <main>
             <Table>
                 <TableCaption>Fim da lista de clientes.</TableCaption>
                 <TableHeader>
@@ -27,10 +20,11 @@ export default function SearchTeacher() {
                         <TableHead className="w-[200px]">Código</TableHead>
                         <TableHead className="w-[400px]">Nome</TableHead>
                         <TableHead>Telefone</TableHead>
+                        <TableHead>Status</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    <StudentsRows />
+                    <CostumerRows />
                 </TableBody>
             </Table>
         </main>

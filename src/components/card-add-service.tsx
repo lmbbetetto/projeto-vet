@@ -3,9 +3,9 @@ import { routes } from "@/utils/routes";
 import { BookOpen, Plus } from "lucide-react";
 import Link from "next/link";
 
-export default function CardAddStudent() {
+export default function CardAddService() {
     return (
-        <Link href={routes.aluno.new} className="w-[50%]">
+        <Link href={routes.service.new} className="w-[50%]">
             <Card className="hover:bg-muted">
                 <CardHeader className="flex-row space-y-0 items-center justify-between pb-2">
                     <CardTitle className="text-base font-normal">Cadastro</CardTitle>
@@ -14,7 +14,7 @@ export default function CardAddStudent() {
 
                 <CardContent className="space-y-1">
                     <span className="text-xl font-bold tracking-tight">
-                        Cadastro de um novo cliente
+                        Cadastro de um novo serviço
                     </span>
                 </CardContent>
             </Card>

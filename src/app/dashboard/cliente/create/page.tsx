@@ -18,7 +18,7 @@ import { toast } from "@/components/ui/use-toast"
 import { ClienteRequest } from "@/utils/types"
 import { createNewCliente } from "./actions"
 
-export default function CreateAluno() {
+export default function CreateCliente() {
     const form = useForm<ClienteRequest>({
         resolver: zodResolver(clienteSchema),
         defaultValues: {
@@ -65,8 +65,6 @@ export default function CreateAluno() {
                     password: data.authRequest.password
                 }
             };
-
-            console.log("Payload do cliente:", payload);
 
             await createNewCliente(payload);
 
@@ -274,7 +272,7 @@ export default function CreateAluno() {
                             )}
                         />
                     </div>
-                    <Button type="submit">Cadastrar Cliente</Button>
+                    <Button type="submit">Cadastrar</Button>
                 </form>
             </Form>
         </ScrollArea>

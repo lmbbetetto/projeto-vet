@@ -1,26 +1,23 @@
 'use client'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ClienteResponse } from "@/utils/types";
 import { PencilRuler } from "lucide-react";
 import { useEffect, useState } from "react";
 
-interface Professor {
-    id: number;
-}
-
 export default function CostumerCountCard() {
-    const [professors, setProfessors] = useState<Professor[]>([]);
+    const [clientes, setClientes] = useState<ClienteResponse[]>([]);
 
-    async function fetchProfessors() {
-        const response = await fetch('/api/professor', {
+    async function fetchClientes() {
+        const response = await fetch('http://localhost:8080/cliente/listar', {
             method: 'GET',
         });
         if (response.ok) {
             const data = await response.json();
-            setProfessors(data);
+            setClientes(data);
         };
     }
     useEffect(() => {
-        fetchProfessors();
+        fetchClientes();
     }, []);
     return (
         <Card>
@@ -31,7 +28,7 @@ export default function CostumerCountCard() {
 
             <CardContent className="space-y-1">
                 <span className="text-2xl font-bold tracking-tight">
-                    {professors.length}
+                    {clientes.length}
                 </span>
                 <p className="text-xs text-muted-foreground">
                     Quantidade de clientes cadastrados

@@ -3,9 +3,9 @@ import { routes } from "@/utils/routes";
 import { BookOpen, Plus } from "lucide-react";
 import Link from "next/link";
 
-export default function CardChamada() {
+export default function CardAddProduct() {
     return (
-        <Link href={routes.chamada.home} className="w-[50%]">
+        <Link href={routes.product.new} className="w-[50%]">
             <Card className="hover:bg-muted">
                 <CardHeader className="flex-row space-y-0 items-center justify-between pb-2">
                     <CardTitle className="text-base font-normal">Cadastro</CardTitle>

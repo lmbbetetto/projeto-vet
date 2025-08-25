@@ -60,3 +60,47 @@ export type ClienteResponse = {
   enderecoResponse: EnderecoResponse;
   status: StatusCliente;
 };
+
+export type ProdutoRequest = {
+  nome: string;
+  preco: number;
+  qtdeEstoque: number;
+  qtdeMinima: number;
+  idTipoProduto: number;
+};
+
+export type TipoProdutoRequest = {
+  nome: string,
+  descricao: string
+}
+
+export type TipoProdutoResponse = {
+  id: number
+  nome: string
+  descricao: string
+  status: StatusCliente
+}
+
+export type ProdutoResponse = {
+  id: number
+  nome: string
+  preco: number
+  qtdeEstoque: number
+  qtdeMinima: number
+  tipoProdutoResponse: TipoProdutoResponse
+  status: StatusCliente
+}
+
+export type ServicoRequest = {
+  nome: string;
+  descricao: string;
+  preco: number;
+};
+
+export type ServicoResponse = {
+      id: number,
+    nome: string,
+    descricao: string,
+    preco: number,
+    status: StatusCliente
+}

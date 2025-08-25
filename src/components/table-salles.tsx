@@ -15,17 +15,27 @@ import { Pedido } from "@/utils/types";
 export default function TableSalles() {
     const [pedidos, setPedidos] = useState<Pedido[]>([]);
 
-    async function fetchProfessors() {
-        const response = await fetch('http://localhost:8080/pedido/listar', {
-            method: 'GET',
-        });
-        if (response.ok) {
+    console.log(pedidos)
+
+    async function fetchPedidos() {
+        try {
+            const response = await fetch('http://localhost:8080/pedido/listar', {
+                method: 'GET',
+            });
+
+            if (!response.ok) {
+                throw new Error(`Erro HTTP: ${response.status}`);
+            }
+
             const data = await response.json();
             setPedidos(data);
-        };
+        } catch (error) {
+            console.error("Erro ao buscar pedidos:", error);
+        }
     }
+
     useEffect(() => {
-        fetchProfessors();
+        fetchPedidos();
     }, []);
 
     return (

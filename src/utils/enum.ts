@@ -7,6 +7,6 @@ export enum StatusSale {
 }
 
 export enum StatusCliente {
-    ATIVO = "ATIVO",
-    INATIVO = "INATIVO",
+    ATIVO = "Ativo",
+    INATIVO = "Inativo",
 }

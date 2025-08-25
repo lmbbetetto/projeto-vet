@@ -1,25 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { EyeIcon, Trash2 } from "lucide-react";
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+import { EyeIcon } from "lucide-react";
 import { useEffect, useState } from "react";
-import { toast } from "@/components/ui/use-toast";
-import Link from "next/link";
-import { routes } from "@/utils/routes";
 import { ClienteResponse } from "@/utils/types";
 
-export function StudentsRows() {
+export function CostumerRows() {
     const [clientes, setClientes] = useState<ClienteResponse[]>([]);
 
     async function fetchAlunos() {
@@ -35,35 +21,6 @@ export function StudentsRows() {
     useEffect(() => {
         fetchAlunos();
     }, [])
-
-    const handleDeleteAluno = async (id: string) => {
-        try {
-            const response = await fetch('http://localhost:8080/cliente/listar', {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ id })
-            })
-            if (response.ok) {
-                toast({
-                    title: "Sucesso",
-                    description: "Professor excluído com sucesso.",
-                })
-                fetchAlunos()
-            } else {
-                toast({
-                    title: "Erro",
-                    description: "Professor excluído sem sucesso.",
-                })
-            }
-        } catch (error) {
-            toast({
-                title: "Erro",
-                description: "Professor excluído sem sucesso.",
-            })
-        }
-    }
 
     return (
         <>
@@ -87,8 +44,8 @@ export function StudentsRows() {
                                                 <div className="mt-4">
                                                     <span className="text-white">Dados pessoais</span>
                                                     <div className="flex flex-col gap-1 ml-2">
-                                                        <p>{cliente.telefone}</p>
-                                                        <p>{cliente.cpf}</p>
+                                                        <span>{cliente.telefone}</span>
+                                                        <span>{cliente.cpf}</span>
                                                     </div>
                                                 </div>
                                                 <div className="mt-4">
@@ -100,35 +57,8 @@ export function StudentsRows() {
                                                     </div>
                                                 </div>
                                             </DialogDescription>
-                                            <DialogFooter>
-                                                {/* <Link href={routes.cliente.edit(cliente.id)}> */}
-                                                <Link href={"/"}>
-                                                    <Button variant={"outline"}>Editar</Button>
-                                                </Link>
-                                            </DialogFooter>
                                         </DialogContent>
                                     </Dialog>
-
-                                    <AlertDialog>
-                                        <AlertDialogTrigger asChild>
-                                            <Button variant="outline">
-                                                <Trash2 className="h-3.5 w-3.5" />
-                                                <span className="sr-only">Excluir aluno</span>
-                                            </Button>
-                                        </AlertDialogTrigger>
-                                        <AlertDialogContent>
-                                            <AlertDialogHeader>
-                                                <AlertDialogTitle>Excluir aluno?</AlertDialogTitle>
-                                                <AlertDialogDescription>
-                                                    Esta ação não poderá ser desfeita. Excluindo este aluno, ele será removido permanentemente do sistema!
-                                                </AlertDialogDescription>
-                                            </AlertDialogHeader>
-                                            <AlertDialogFooter>
-                                                <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                                                <AlertDialogAction onClick={() => handleDeleteAluno(cliente.id.toString())}>Excluir</AlertDialogAction>
-                                            </AlertDialogFooter>
-                                        </AlertDialogContent>
-                                    </AlertDialog>
                                 </div>
                             </DialogTrigger>
                         </Dialog>
@@ -141,6 +71,9 @@ export function StudentsRows() {
                     </TableCell>
                     <TableCell className="font-medium">
                         {cliente.telefone}
+                    </TableCell>
+                    <TableCell className="font-medium">
+                        {cliente.status.charAt(0).toUpperCase() + cliente.status.slice(1).toLowerCase()}
                     </TableCell>
                 </TableRow >
             ))

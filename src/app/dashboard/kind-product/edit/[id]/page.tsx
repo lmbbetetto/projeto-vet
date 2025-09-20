@@ -13,46 +13,20 @@ import { TipoProdutoRequest } from "@/utils/types";
 import { tipoProdutoSchema, TipoProdutoSchema } from "../../create/schema";
 import { updateTipoProduto } from "../../create/actions";
 
-const fetchUserData = async (id: string) => {
-    try {
-        const response = await fetch(`http://localhost:8080/tipo-produto/listar/${id}`, {
-            method: 'GET',
-        });
-
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status} ${response.statusText}`);
-        }
-
-        return await response.json();
-    } catch (error) {
-        console.error("Failed to fetch user data", error);
-        throw error;
-    }
-};
-
 export default function UserPage() {
     const params = useParams();
     const id = Array.isArray(params.id) ? params.id[0] : params.id;
 
-    const [tipoProduto, setTipoProduto] = useState<TipoProdutoRequest[]>([]);
-
     const form = useForm<TipoProdutoSchema>({
         resolver: zodResolver(tipoProdutoSchema),
-        defaultValues: {},
+        defaultValues: {
+            nome: "",
+            descricao: "",
+        },
     });
 
-    async function fetchProfessors() {
-        const response = await fetch('http://localhost:8080/tipo-produto/listar', {
-            method: 'GET',
-        });
-        if (response.ok) {
-            const data = await response.json();
-            setTipoProduto(data);
-        };
-    }
-
-    const fetchProdutoData = async (id: string) => {
-        const response = await fetch(`http://localhost:8080/produto/listar/${id}`, {
+    const fetchTipoData = async (id: string) => {
+        const response = await fetch(`http://localhost:8080/tipo-produto/buscar/${id}`, {
             method: 'GET',
         });
         if (!response.ok) throw new Error('Erro ao buscar produto');
@@ -60,10 +34,9 @@ export default function UserPage() {
     };
 
     useEffect(() => {
-        fetchProfessors();
-        fetchProdutoData(id!);
+        fetchTipoData(id!);
         if (id) {
-            fetchUserData(id as string)
+            fetchTipoData(id as string)
                 .then((data: TipoProdutoRequest) => {
                     form.reset({
                         nome: data.nome,

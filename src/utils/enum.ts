@@ -1,9 +1,9 @@
 export enum StatusSale {
-    REALIZADO,
-    PREPARACAO,
-    ENVIADO,
-    CANCELADO,
-    FINALIZADO,
+    REALIZADO = "Realizado",
+    PREPARACAO = "Preparação",
+    ENVIADO = "Enviado",
+    CANCELADO = "Cancelado",
+    FINALIZADO = "Finalizado",
 }
 
 export enum StatusCliente {

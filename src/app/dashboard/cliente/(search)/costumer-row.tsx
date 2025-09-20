@@ -35,25 +35,33 @@ export function CostumerRows() {
                                             <Button variant="outline">
                                                 <EyeIcon className="h-3.5 w-3.5" />
                                                 <span className="sr-only">Visualizar cliente</span>
-                                            </Button></DialogTrigger>
+                                            </Button>
+                                        </DialogTrigger>
                                         <DialogContent>
                                             <DialogHeader>
                                                 <DialogTitle className="text-2xl">{cliente.nome}</DialogTitle>
                                             </DialogHeader>
-                                            <DialogDescription>
-                                                <div className="mt-4">
-                                                    <span className="text-white">Dados pessoais</span>
-                                                    <div className="flex flex-col gap-1 ml-2">
-                                                        <span>{cliente.telefone}</span>
-                                                        <span>{cliente.cpf}</span>
+                                            <DialogDescription asChild>
+                                                <div>
+                                                    <div className="mt-4">
+                                                        <span className="text-white">Dados pessoais</span>
+                                                        <div className="flex flex-col gap-1 ml-2">
+                                                            <span>{cliente.telefone}</span>
+                                                            <span>{cliente.cpf}</span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div className="mt-4">
-                                                    <span className="text-white">Endereço</span>
-                                                    <div className="flex flex-col gap-1 ml-2">
-                                                        <span>{cliente.enderecoResponse.logradouro}, {cliente.enderecoResponse.numero} - {cliente.enderecoResponse.complemento}</span>
-                                                        <span>{cliente.enderecoResponse.bairro}</span>
-                                                        <span>{cliente.enderecoResponse.cidade} - {cliente.enderecoResponse.estado}</span>
+                                                    <div className="mt-4">
+                                                        <span className="text-white">Endereço</span>
+                                                        <div className="flex flex-col gap-1 ml-2">
+                                                            <span>
+                                                                {cliente.enderecoResponse?.logradouro}, {cliente.enderecoResponse?.numero} -{" "}
+                                                                {cliente.enderecoResponse?.complemento}
+                                                            </span>
+                                                            <span>{cliente.enderecoResponse?.bairro}</span>
+                                                            <span>
+                                                                {cliente.enderecoResponse?.cidade} - {cliente.enderecoResponse?.estado}
+                                                            </span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </DialogDescription>

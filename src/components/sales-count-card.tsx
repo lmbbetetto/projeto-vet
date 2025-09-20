@@ -1,26 +1,43 @@
 'use client'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Pedido } from "@/utils/types";
 import { Users } from "lucide-react";
 import { useEffect, useState } from "react";
 
-interface Aluno {
-    id: number;
-}
-
 export default function SalesCountCard() {
-    const [alunos, setAlunos] = useState<Aluno[]>([]);
+    const [pedidos, setPedidos] = useState<Pedido[]>([]);
 
-    async function fetchProfessors() {
-        const response = await fetch('/api/aluno', {
-            method: 'GET',
-        });
-        if (response.ok) {
-            const data = await response.json();
-            setAlunos(data);
-        };
+    async function fetchPedidos() {
+        try {
+            const token = document.cookie
+                .split("; ")
+                .find(row => row.startsWith("token="))
+                ?.split("=")[1];
+
+            const response = await fetch("http://localhost:8080/pedido/listar-dashboard", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                },
+                credentials: "include",
+            });
+
+            if (!response.ok) {
+                const text = await response.text();
+                console.error("Erro HTTP:", response.status, text);
+                throw new Error(`HTTP ${response.status}`);
+            }
+
+            const data: Pedido[] = await response.json();
+            setPedidos(data);
+        } catch (error) {
+            console.error("Erro ao buscar pedidos:", error);
+        }
     }
+
     useEffect(() => {
-        fetchProfessors();
+        fetchPedidos();
     }, []);
 
     return (
@@ -32,7 +49,7 @@ export default function SalesCountCard() {
 
             <CardContent className="space-y-1">
                 <span className="text-2xl font-bold tracking-tight">
-                    {alunos.length}
+                    {pedidos.length}
                 </span>
                 <p className="text-xs text-muted-foreground">
                     Quantidade de vendas cadastrados

@@ -1,6 +1,12 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+.bg-login-background {
+  background-image: url("../../public/foto-fundo.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

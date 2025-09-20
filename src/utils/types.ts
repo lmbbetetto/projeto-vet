@@ -69,6 +69,21 @@ export type ProdutoRequest = {
   idTipoProduto: number;
 };
 
+export type ProdutoResponseID = {
+  id: number;
+  nome: string;
+  preco: number;
+  qtdeEstoque: number;
+  qtdeMinima: number;
+  tipoProdutoResponse: {
+    id: number;
+    nome: string;
+    descricao: string;
+    status: StatusCliente;
+  };
+  status: string;
+};
+
 export type TipoProdutoRequest = {
   nome: string,
   descricao: string
@@ -98,9 +113,31 @@ export type ServicoRequest = {
 };
 
 export type ServicoResponse = {
-      id: number,
+    id: number,
     nome: string,
     descricao: string,
     preco: number,
     status: StatusCliente
+}
+
+export type ProdutoCarrinhoResponse = {
+  id: number
+  nome: string
+  preco: number
+  qtdeEstoque: number
+  qtdeMinima: number
+  tipoProdutoResponse: TipoProdutoResponse
+  status: StatusCliente
+  urlImagem: string;
+}
+
+export interface ListaProdutoResponse {
+  produto: ProdutoCarrinhoResponse;
+  qtde: number;
+}
+
+export interface CarrinhoResponse {
+  id: number;
+  listaDeProduto: ListaProdutoResponse[];
+  total: number;
 }

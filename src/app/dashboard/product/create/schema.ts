@@ -5,7 +5,8 @@ export const produtoSchema = z.object({
   preco: z.number().min(0, { message: "Preço inválido" }),
   qtdeEstoque: z.number().min(0, { message: "Quantidade em estoque inválida" }),
   qtdeMinima: z.number().min(0, { message: "Quantidade mínima inválida" }),
-  idTipoProduto: z.number().min(1, { message: "Tipo de produto é obrigatório" })
+  idTipoProduto: z.number().min(1, { message: "Tipo de produto é obrigatório" }),
+  imagem: z.any().optional()
 });
 
 export type ProdutoSchema = z.infer<typeof produtoSchema>;
@@ -15,5 +16,6 @@ export const produtoDefaultValues: ProdutoSchema = {
   preco: 0,
   qtdeEstoque: 0,
   qtdeMinima: 0,
-  idTipoProduto: 0
+  idTipoProduto: 0,
+  imagem: ""
 };

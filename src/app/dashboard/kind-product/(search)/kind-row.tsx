@@ -82,7 +82,7 @@ export function KindRows() {
                                             <DialogHeader>
                                                 <DialogTitle className="text-2xl">{tipo.nome}</DialogTitle>
                                             </DialogHeader>
-                                            <DialogDescription>
+                                            <DialogDescription asChild>
                                                 <div className="flex flex-col gap-1 ml-2 mt-4">
                                                     <span>{tipo.descricao}</span>
                                                 </div>

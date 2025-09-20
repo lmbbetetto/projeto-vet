@@ -4,7 +4,7 @@ import { routes } from '@/utils/routes';
 import { ProdutoRequest } from '@/utils/types';
 
 export async function createNewProduto(
-  payload: ProdutoRequest
+  payload: ProdutoRequest & { imagem?: string }
 ): Promise<ProdutoRequest> {
   const data: ProdutoRequest = {
     nome: payload.nome,
@@ -28,15 +28,32 @@ export async function createNewProduto(
     throw new Error('Erro ao cadastrar produto');
   }
 
-  let result: ProdutoRequest;
-  try {
-    result = await response.json();
-  } catch {
-    console.warn("Resposta sem JSON, retornando o payload enviado");
-    result = data;
-  }
+  const result: ProdutoRequest = await response.json();
+  console.log("Produto cadastrado:", result);
 
-  console.log("Resultado do cadastro:", result);
+  if (payload.imagem) {
+    try {
+      const fotoResponse = await fetch(
+        `http://localhost:8080/produto/atualizar-foto/${result.idTipoProduto}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ foto: payload.imagem }),
+        }
+      );
+
+      if (!fotoResponse.ok) {
+        const errorText = await fotoResponse.text();
+        console.error("Erro ao atualizar foto:", fotoResponse.status, errorText);
+      } else {
+        console.log("Foto atualizada com sucesso");
+      }
+    } catch (err) {
+      console.error("Erro na requisição de atualizar foto:", err);
+    }
+  }
 
   revalidatePath(routes.product.search, 'page');
 

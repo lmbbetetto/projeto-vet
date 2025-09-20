@@ -13,61 +13,38 @@ import { ServicoRequest, TipoProdutoRequest } from "@/utils/types";
 import { servicoSchema, ServicoSchema } from "../../create/schema";
 import { updateServico } from "../../create/actions";
 
-const fetchUserData = async (id: string) => {
-    try {
-        const response = await fetch(`http://localhost:8080/tipo-produto/listar/${id}`, {
-            method: 'GET',
-        });
-
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status} ${response.statusText}`);
-        }
-
-        return await response.json();
-    } catch (error) {
-        console.error("Failed to fetch user data", error);
-        throw error;
-    }
-};
-
 export default function UserPage() {
     const params = useParams();
     const id = Array.isArray(params.id) ? params.id[0] : params.id;
 
-    const [tipoProduto, setTipoProduto] = useState<TipoProdutoRequest[]>([]);
+    const [tipoProduto, setTipoProduto] = useState<ServicoRequest[]>([]);
 
     const form = useForm<ServicoSchema>({
         resolver: zodResolver(servicoSchema),
-        defaultValues: {},
+        defaultValues: {
+            nome: "",
+            descricao: "",
+            preco: 0,
+        },
     });
 
-    async function fetchProfessors() {
-        const response = await fetch('http://localhost:8080/tipo-produto/listar', {
-            method: 'GET',
-        });
-        if (response.ok) {
-            const data = await response.json();
-            setTipoProduto(data);
-        };
-    }
-
-    const fetchProdutoData = async (id: string) => {
-        const response = await fetch(`http://localhost:8080/produto/listar/${id}`, {
+    const fetchServiceData = async (id: string) => {
+        const response = await fetch(`http://localhost:8080/servico/buscar/${id}`, {
             method: 'GET',
         });
         if (!response.ok) throw new Error('Erro ao buscar produto');
-        return response.json() as Promise<TipoProdutoRequest>;
+        return response.json() as Promise<ServicoRequest>;
     };
 
     useEffect(() => {
-        fetchProfessors();
-        fetchProdutoData(id!);
+        fetchServiceData(id!);
         if (id) {
-            fetchUserData(id as string)
-                .then((data: TipoProdutoRequest) => {
+            fetchServiceData(id as string)
+                .then((data: ServicoRequest) => {
                     form.reset({
                         nome: data.nome,
                         descricao: data.descricao,
+                        preco: data.preco
                     });
                 })
                 .catch((error) => console.error("Error fetching produto data:", error));
@@ -150,12 +127,20 @@ export default function UserPage() {
                                 <FormLabel>Preço *</FormLabel>
                                 <FormControl>
                                     <Input
-                                        type="number"
-                                        step="0.01"
-                                        {...field}
-                                        onChange={(e) =>
-                                            field.onChange(e.target.value === "" ? "" : parseFloat(e.target.value))
+                                        type="text"
+                                        value={
+                                            field.value !== undefined && field.value !== null && field.value !== 0
+                                                ? new Intl.NumberFormat("pt-BR", {
+                                                    style: "currency",
+                                                    currency: "BRL",
+                                                }).format(Number(field.value))
+                                                : ""
                                         }
+                                        onChange={(e) => {
+                                            const rawValue = e.target.value.replace(/\D/g, "");
+                                            const numericValue = Number(rawValue) / 100;
+                                            field.onChange(numericValue);
+                                        }}
                                     />
                                 </FormControl>
                                 <FormMessage />

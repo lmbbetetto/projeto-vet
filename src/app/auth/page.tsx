@@ -25,7 +25,7 @@ export default function SignIn() {
 
   async function handleSignIn(data: SignInForm) {
     try {
-      const response = await fetch('http://localhost:8080/auth/login', {
+      const response = await fetch('http://localhost:8080/auth/login-admin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

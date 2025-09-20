@@ -11,10 +11,10 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: {
     absolute: "",
-    default: "Projeto CARA",
-    template: "Projeto CARA | %s",
+    default: "Bella Pet",
+    template: "Bella Pet | %s",
   },
-  description: "Sistema integrado Projeto CARA",
+  description: "Bella Pet - Sistema de Vendas",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

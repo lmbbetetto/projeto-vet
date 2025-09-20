@@ -1,7 +1,7 @@
 "use client";
 import { LogOut, User, House } from "lucide-react";
 import UserItem from "./UserItem";
-import { Command, CommandGroup, CommandItem, CommandList } from "./ui/command";
+import { Command, CommandItem, CommandList } from "./ui/command";
 import { Button } from "./ui/button";
 import { ModeToggle } from "./toggle-theme";
 import {
@@ -14,7 +14,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { ScrollArea } from "@/components/ui/scroll-area";

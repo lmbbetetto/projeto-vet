@@ -15,19 +15,29 @@ import { Pedido } from "@/utils/types";
 export default function TableSalles() {
     const [pedidos, setPedidos] = useState<Pedido[]>([]);
 
-    console.log(pedidos)
-
     async function fetchPedidos() {
         try {
-            const response = await fetch('http://localhost:8080/pedido/listar', {
-                method: 'GET',
+            const token = document.cookie
+                .split("; ")
+                .find(row => row.startsWith("token="))
+                ?.split("=")[1];
+
+            const response = await fetch("http://localhost:8080/pedido/listar-dashboard", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                },
+                credentials: "include",
             });
 
             if (!response.ok) {
-                throw new Error(`Erro HTTP: ${response.status}`);
+                const text = await response.text();
+                console.error("Erro HTTP:", response.status, text);
+                throw new Error(`HTTP ${response.status}`);
             }
 
-            const data = await response.json();
+            const data: Pedido[] = await response.json();
             setPedidos(data);
         } catch (error) {
             console.error("Erro ao buscar pedidos:", error);
@@ -50,19 +60,29 @@ export default function TableSalles() {
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {pedidos.map((pedido) => (
-                    <TableRow key={pedido.id}>
-                        <TableCell className="font-medium">{pedido.statusPedido}</TableCell>
-                        <TableCell>{pedido.dataHora}</TableCell>
-                        <TableCell>{pedido.cliente}</TableCell>
-                        <TableCell className="text-left">
-                            {pedido.valorDaVenda.toLocaleString("pt-BR", {
-                                style: "currency",
-                                currency: "BRL",
-                            })}
-                        </TableCell>
-                    </TableRow>
-                ))}
+                {pedidos.map((pedido) => {
+                    const dataFormatada = new Date(pedido.dataHora);
+                    const dia = String(dataFormatada.getDate()).padStart(2, "0");
+                    const mes = String(dataFormatada.getMonth() + 1).padStart(2, "0");
+                    const ano = dataFormatada.getFullYear();
+                    const hora = String(dataFormatada.getHours()).padStart(2, "0");
+                    const minuto = String(dataFormatada.getMinutes()).padStart(2, "0");
+                    const statusFormatado = pedido.statusPedido.charAt(0).toUpperCase() + pedido.statusPedido.slice(1).toLowerCase();
+
+                    return (
+                        <TableRow key={pedido.id}>
+                            <TableCell className="font-medium">{statusFormatado}</TableCell>
+                            <TableCell>{`${dia}/${mes}/${ano}, ${hora}:${minuto}`}</TableCell>
+                            <TableCell>{pedido.cliente}</TableCell>
+                            <TableCell className="text-left">
+                                {pedido.valorDaVenda.toLocaleString("pt-BR", {
+                                    style: "currency",
+                                    currency: "BRL",
+                                })}
+                            </TableCell>
+                        </TableRow>
+                    );
+                })}
             </TableBody>
             <TableFooter>
                 <TableRow>

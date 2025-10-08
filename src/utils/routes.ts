@@ -32,6 +32,11 @@ export const routes = {
   },
   clienteCadastro: {
     create: "/cadastro",
-    profile: (id: string): string => `/cadastro/perfil/${id}`
+    profile: (id: string): string => `/cadastro/perfil/${id}`,
+    pedidos: (id: string): string => `/cadastro/perfil/${id}/meus-pedidos`,
+    agendamentos: (id: string): string => `/cadastro/perfil/${id}/meus-agendamentos`
+  },
+  agendamento: {
+    new: "/agendamento",
   }
 };

@@ -141,3 +141,40 @@ export interface CarrinhoResponse {
   listaDeProduto: ListaProdutoResponse[];
   total: number;
 }
+
+export type TokenPayload = {
+  sub: string;
+  exp: number;
+  iat?: number;
+  ["auth-id"]: number;
+};
+
+export type HoraResponse = {
+  hour: number
+  minute: number
+  second: number
+  nano: number
+}
+
+export type ServicoAgendamentoResponse = {
+  id: number
+  nome: string
+  descricao: string
+  preco: number
+  status: StatusCliente
+}
+
+export type AgendamentoResponse = {
+  data: string
+  hora: HoraResponse
+  listaDeServico: ServicoAgendamentoResponse[]
+}
+
+export interface AgendamentoRequest {
+  id: number
+  dataHora: string
+  status: "AGENDADO" | "CANCELADO" | "CONCLUIDO" | string
+  total: number
+  cliente: ClienteResponse
+  listaDeServicos: ServicoAgendamentoResponse[]
+}

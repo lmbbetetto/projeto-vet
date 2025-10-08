@@ -17,8 +17,6 @@ import { StatusCliente } from "@/utils/enum";
 export default function EditProduto() {
     const params = useParams();
     const id = Array.isArray(params.id) ? params.id[0] : params.id;
-    const [tipoProduto, setTipoProduto] = useState<ClienteResponse[]>([]);
-    const [preview, setPreview] = useState<string | null>(null);
 
     const form = useForm<ClienteResponse>({
         resolver: zodResolver(clienteSchema),
@@ -44,15 +42,7 @@ export default function EditProduto() {
 
     const { reset } = form;
 
-    async function fetchTipo() {
-        const response = await fetch('http://localhost:8080/tipo-produto/listar');
-        if (response.ok) {
-            const data: ClienteResponse[] = await response.json();
-            setTipoProduto(data);
-        }
-    }
-
-    async function fetchProdutoData(id: string) {
+    async function fetchClienteData(id: string) {
         const response = await fetch(`http://localhost:8080/cliente/buscar/${id}`);
         if (!response.ok) throw new Error("Erro ao buscar produto");
         const data: ClienteResponse = await response.json();
@@ -75,8 +65,7 @@ export default function EditProduto() {
     }
 
     useEffect(() => {
-        fetchTipo();
-        if (id) fetchProdutoData(id).catch(console.error);
+        if (id) fetchClienteData(id).catch(console.error);
     }, [id]);
 
     const onSubmit = async (data: ClienteResponse) => {
@@ -108,7 +97,7 @@ export default function EditProduto() {
     };
 
     return (
-        <ScrollArea className="h-[47.4rem] w-[853px] pr-[50px]">
+        <ScrollArea className="h-[47.4rem] w-[1300px] pr-[50px]">
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 p-2 pt-0">
                     <h1 className="text-m text-muted-foreground">Perfil do Usuário</h1>

@@ -10,17 +10,11 @@ import { toast } from "sonner";
 import Link from "next/link";
 import { routes } from "@/utils/routes";
 import { jwtDecode } from "jwt-decode";
-
-type TokenPayload = {
-  id: string;
-  sub: string;
-  exp: number;
-  iat: number;
-};
+import { TokenPayload } from "@/utils/types";
 
 export default function UserLogin() {
   const [user, setUser] = useState<string | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
+  const [userId, setUserId] = useState<number | null>(null);
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -32,12 +26,14 @@ export default function UserLogin() {
       try {
         const decoded = jwtDecode<TokenPayload>(token);
         setUser(decoded.sub || "User");
-        setUserId(decoded.id);
+        setUserId(decoded["auth-id"]);
       } catch (err) {
         console.error("Erro ao decodificar token:", err);
       }
     }
   }, []);
+
+  console.log(userId)
 
   async function handleSignIn(e: React.FormEvent) {
     e.preventDefault();
@@ -122,7 +118,7 @@ export default function UserLogin() {
       ) : (
         <DropdownMenuContent align="end" className="p-2 w-40 flex flex-col gap-1">
           <DropdownMenuItem asChild>
-            <Link href={routes.clienteCadastro.profile(String(3))}>
+            <Link href={routes.clienteCadastro.profile(String(userId) ?? "")}>
               <button
                 className="flex items-center gap-2 w-full"
               >

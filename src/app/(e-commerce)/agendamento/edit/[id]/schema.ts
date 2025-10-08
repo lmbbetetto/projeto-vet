@@ -1,0 +1,19 @@
+import { z } from "zod";
+
+export const produtoSchema = z.object({
+  nome: z.string().min(1, "Nome é obrigatório"),
+  preco: z.number().min(0, "Preço inválido"),
+  qtdeEstoque: z.number().min(0, "Quantidade em estoque inválida"),
+  qtdeMinima: z.number().min(0, "Quantidade mínima inválida"),
+  idTipoProduto: z.number().min(1, "Tipo de produto é obrigatório"),
+});
+
+export type ProdutoSchema = z.infer<typeof produtoSchema>;
+
+export const produtoDefaultValues: ProdutoSchema = {
+  nome: "",
+  preco: 0,
+  qtdeEstoque: 0,
+  qtdeMinima: 0,
+  idTipoProduto: 0,
+};

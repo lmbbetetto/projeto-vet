@@ -1,7 +1,6 @@
 import { FooterEcommerce } from "@/components/footer-ecommerce";
 import { HeaderEcommerce } from "@/components/header-ecommerce";
 import { Toaster } from "@/components/ui/toaster";
-import { CartProvider } from "../context/CartContext";
 
 export default function HomeLayout({
   children,
@@ -13,9 +12,7 @@ export default function HomeLayout({
       <HeaderEcommerce />
       <main>
         <div className="p-[10rem] pt-4">
-          <CartProvider>
-            {children}
-          </CartProvider>
+          {children}
         </div>
       </main>
       <FooterEcommerce />

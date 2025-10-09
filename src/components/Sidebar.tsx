@@ -58,6 +58,12 @@ export default function Sidebar() {
         { link: routes.service.search, text: "Buscar serviço" },
       ],
     },
+    {
+      title: "Agendamento",
+      items: [
+        { link: routes.agendamento.dashboard, text: "Buscar agendamento" },
+      ],
+    },
   ];
 
   return (

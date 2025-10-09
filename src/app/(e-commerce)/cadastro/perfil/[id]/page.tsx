@@ -40,11 +40,11 @@ export default function EditProduto() {
         }
     });
 
-    const { reset } = form;
+    const { reset, watch } = form;
 
     async function fetchClienteData(id: string) {
         const response = await fetch(`http://localhost:8080/cliente/buscar/${id}`);
-        if (!response.ok) throw new Error("Erro ao buscar produto");
+        if (!response.ok) throw new Error("Erro ao buscar cliente");
         const data: ClienteResponse = await response.json();
         reset({
             nome: data.nome,
@@ -68,38 +68,37 @@ export default function EditProduto() {
         if (id) fetchClienteData(id).catch(console.error);
     }, [id]);
 
-    const onSubmit = async (data: ClienteResponse) => {
-        // if (!id) return;
+    async function onSubmit() {
+        const data = watch();
+        if (!id) return;
 
-        // try {
-        //     const payload = {
-        //         nome: data.nome,
-        //         preco: data.preco,
-        //         qtdeEstoque: data.qtdeEstoque,
-        //         qtdeMinima: data.qtdeMinima,
-        //         idTipoProduto: data.idTipoProduto,
-        //     };
+        try {
+            const payloadCliente = {
+                nome: data.nome,
+                cpf: data.cpf,
+                telefone: data.telefone,
+                email: data.email,
+            };
 
-        //     const updateResponse = await fetch(`http://localhost:8080/produto/atualizar/${id}`, {
-        //         method: "PUT",
-        //         headers: { "Content-Type": "application/json" },
-        //         body: JSON.stringify(payload),
-        //     });
+            const updateResponse = await fetch(`http://localhost:8080/cliente/atualizar`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payloadCliente),
+            });
 
-        //     if (!updateResponse.ok) throw new Error("Erro ao atualizar produto");
+            if (!updateResponse.ok) throw new Error("Erro ao atualizar cliente");
 
-        //     toast({ title: "Sucesso!", description: "Produto atualizado com sucesso!" });
-        //     setPreview(null);
-        // } catch (err) {
-        //     console.error(err);
-        //     toast({ title: "Erro", description: "Ocorreu um erro ao atualizar o produto.", variant: "destructive" });
-        // }
-    };
+            toast({ title: "Sucesso!", description: "Cliente atualizado com sucesso!" });
+        } catch (err) {
+            console.error(err);
+            toast({ title: "Erro", description: "Ocorreu um erro ao atualizar o cliente.", variant: "destructive" });
+        }
+    }
 
     return (
         <ScrollArea className="h-[47.4rem] w-[1300px] pr-[50px]">
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 p-2 pt-0">
+                <form className="space-y-8 p-2 pt-0">
                     <h1 className="text-m text-muted-foreground">Perfil do Usuário</h1>
                     <FormField
                         control={form.control}
@@ -256,7 +255,7 @@ export default function EditProduto() {
                             </FormItem>
                         )}
                     />
-                    <Button type="submit">Atualizar</Button>
+                    <Button type="button" onClick={onSubmit}>Atualizar</Button>
                 </form>
             </Form>
         </ScrollArea>

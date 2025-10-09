@@ -38,5 +38,6 @@ export const routes = {
   },
   agendamento: {
     new: "/agendamento",
+    dashboard: "/dashboard/agendamento",
   }
 };

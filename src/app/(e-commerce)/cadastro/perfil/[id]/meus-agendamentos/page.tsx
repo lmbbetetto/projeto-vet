@@ -40,7 +40,7 @@ export default function MySells() {
             const data: AgendamentoRequest[] = await response.json();
             setAgendamentos(data);
         } catch (error) {
-            console.error("Erro ao buscar pedidos:", error);
+            console.error("Erro ao buscar agendamentos:", error);
         }
     }
 

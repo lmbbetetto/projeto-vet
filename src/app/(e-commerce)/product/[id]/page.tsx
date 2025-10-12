@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ProdutoResponse } from "@/utils/types";
 import { toast } from "@/components/ui/use-toast";
+import { useCarrinho } from "@/providers/shopping-cart/cart-provider";
 
 export default function ProdutoPage() {
     const [produto, setProduto] = useState<ProdutoResponse>();
@@ -13,6 +14,7 @@ export default function ProdutoPage() {
     const [loading, setLoading] = useState(false);
     const params = useParams();
     const id = Array.isArray(params.id) ? params.id[0] : params.id;
+    const { fetchCarrinho } = useCarrinho();
 
     const fetchProdutoData = async (id: string) => {
         const response = await fetch(`http://localhost:8080/produto/buscar/${id}`, {
@@ -64,7 +66,7 @@ export default function ProdutoPage() {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`,
+                    Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify({
                     idProduto: id,
@@ -74,13 +76,11 @@ export default function ProdutoPage() {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                console.error("Erro ao adicionar ao carrinho:", errorData);
                 toast({
                     title: "Erro",
                     description: errorData.message || "Erro ao adicionar ao carrinho.",
                     variant: "destructive",
                 });
-                setLoading(false);
                 return;
             }
 
@@ -88,8 +88,10 @@ export default function ProdutoPage() {
                 title: "Sucesso",
                 description: "Produto adicionado ao carrinho com sucesso!",
             });
+
+            await fetchCarrinho();
+
         } catch (error) {
-            console.error("Erro de conexão:", error);
             toast({
                 title: "Erro",
                 description: "Erro de conexão ao adicionar ao carrinho.",

@@ -6,11 +6,57 @@ import { Button } from "../ui/button";
 import { ShoppingCartProps } from "./types";
 import Image from "next/image";
 import Link from "next/link";
+import { Trash2 } from "lucide-react";
+import { toast } from "../ui/use-toast";
+import { useCarrinho } from "@/providers/shopping-cart/cart-provider";
 
 export function ShoppingCart({ items }: ShoppingCartProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const { fetchCarrinho } = useCarrinho();
 
   const closeCart = () => setIsOpen(false);
+
+  const handleDeleteTipoProduto = async (idProduto: number, qtde: number) => {
+    console.log(idProduto, qtde)
+    try {
+      const token = document.cookie
+        .split("; ")
+        .find(row => row.startsWith("token="))
+        ?.split("=")[1];
+      const response = await fetch("http://localhost:8080/carrinho/remover", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          idProduto,
+          qtde,
+        }),
+      });
+
+      const text = await response.text();
+      console.log("Resposta do servidor:", text);
+
+      if (response.ok) {
+        toast({
+          title: "Sucesso",
+          description: "Produto removido com sucesso.",
+        });
+        await fetchCarrinho();
+      } else {
+        toast({
+          title: "Erro",
+          description: "Não foi possível remover o produto.",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Erro",
+        description: "Não foi possível remover o produto.",
+      });
+    }
+  };
 
   return (
     <>
@@ -59,7 +105,7 @@ export function ShoppingCart({ items }: ShoppingCartProps) {
                       alt={item.produto.nome}
                       width={80}
                       height={80}
-                      className="object-cover transition-transform duration-300 ease-in-out rounded-2xl mb-2"
+                      className="object-cover rounded-2xl"
                     />
                     <div className="flex-1">
                       <h3 className="text-lg font-semibold">{item.produto.nome}</h3>
@@ -68,6 +114,14 @@ export function ShoppingCart({ items }: ShoppingCartProps) {
                       </p>
                     </div>
                     <p className="text-sm text-gray-500">{item.qtde}</p>
+                    <Button
+                      className="bg-red-700 hover:bg-red-800"
+                      onClick={() =>
+                        handleDeleteTipoProduto(item.produto.id, item.qtde)
+                      }
+                    >
+                      <Trash2 />
+                    </Button>
                   </div>
                 ))
               )}
@@ -96,14 +150,19 @@ export function ShoppingCart({ items }: ShoppingCartProps) {
 
           <style jsx>{`
             @keyframes slide-in {
-              from { transform: translateX(100%); }
-              to { transform: translateX(0%); }
+              from {
+                transform: translateX(100%);
+              }
+              to {
+                transform: translateX(0%);
+              }
             }
-            .animate-slide-in { animation: slide-in 0.3s ease-out; }
+            .animate-slide-in {
+              animation: slide-in 0.3s ease-out;
+            }
           `}</style>
         </>
-      )
-      }
+      )}
     </>
   );
 }

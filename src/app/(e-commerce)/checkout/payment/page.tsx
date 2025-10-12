@@ -18,6 +18,7 @@ import {
 } from "@tabler/icons-react";
 import QRCode from "react-qr-code";
 import { EnderecoResponse } from "@/utils/types";
+import { useCarrinho } from "@/providers/shopping-cart/cart-provider";
 
 
 export default function Payment() {
@@ -30,6 +31,7 @@ export default function Payment() {
     const [gerarPix, setGerarPix] = useState(false);
     const [finalizado, setFinalizado] = useState(false);
     const [token, setToken] = useState<string | null>(null);
+    const { fetchCarrinho } = useCarrinho();
 
     const codigoPixFalso = "123e4567-e89b-12d3-a456-426614174000";
 
@@ -57,7 +59,6 @@ export default function Payment() {
                     "Authorization": `Bearer ${authToken}`,
                 },
             });
-
             if (!response.ok) {
                 console.error("Erro no backend:", response.status);
                 return;
@@ -83,7 +84,7 @@ export default function Payment() {
                     tipo: metodoPagamento.toUpperCase()
                 }),
             });
-
+            await fetchCarrinho();
             if (!response.ok) {
                 console.error("Erro no backend:", response.status);
                 return;

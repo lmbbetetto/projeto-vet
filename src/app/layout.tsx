@@ -5,6 +5,8 @@ import { Inter } from "next/font/google";
 import { ThemeProviderr } from "@/providers/theme-provider";
 import { twMerge } from "tailwind-merge";
 import { COMPONENT_STYLE } from "@/theme";
+import { CarrinhoProvider } from "@/providers/shopping-cart/cart-provider";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -27,7 +29,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       >
         <ThemeProviderr>
           <main>
-            {children}
+            <CarrinhoProvider>
+              {children}
+            </CarrinhoProvider>
           </main>
         </ThemeProviderr>
       </body>

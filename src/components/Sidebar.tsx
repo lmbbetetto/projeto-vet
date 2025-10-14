@@ -20,6 +20,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useRouter } from "next/navigation";
 import { routes } from "@/utils/routes";
 import { useCallback } from "react";
+import { IconCash } from "@tabler/icons-react";
 
 export default function Sidebar() {
   const router = useRouter();
@@ -80,6 +81,13 @@ export default function Sidebar() {
             >
               <House size={18} />
               Início
+            </p>
+            <p
+              className="flex gap-2 items-center text-sm hover:cursor-pointer hover:bg-muted p-1 rounded-sm"
+              onClick={() => router.push(routes.salles.search)}
+            >
+              <IconCash size={18} />
+              Vendas
             </p>
           </section>
 

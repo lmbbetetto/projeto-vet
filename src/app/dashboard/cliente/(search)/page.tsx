@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/table"
 import { CostumerRows } from "./costumer-row"
 
-export default function SearchTeacher() {
+export default function SearchCostumers() {
     return (
         <main>
             <Table>
